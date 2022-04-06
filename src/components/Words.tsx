@@ -6,7 +6,7 @@ interface IWord {
   japanese: string;
 }
 
-const ENV = (window as any).ENV
+const ENV = (window as any).ENV;
 
 const fetchRequestService = new FetchRequestService();
 
@@ -36,10 +36,23 @@ const Words = () => {
 
   return (
     <>
-      <input value={search} onChange={(event) => setSearch(event.target.value)} />
+      <input
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
+        placeholder="Search..."
+        style={{
+          width: "calc(100% - 10px)",
+          padding: "5px",
+          marginBottom: "10px",
+        }}
+      />
       <table>
         <thead>
-          <tr>
+          <tr
+            style={{
+              textAlign: "left",
+            }}
+          >
             <th>English</th>
             <th>Japanese</th>
           </tr>
@@ -47,12 +60,28 @@ const Words = () => {
         <tbody>
           {words
             .filter((word: IWord) => {
-              return word.english.includes(search) || word.japanese.includes(search);
+              return (
+                word.english.toLowerCase().includes(search.toLowerCase()) || word.japanese.toLowerCase().includes(search.toLowerCase())
+              );
             })
             .map((word: IWord) => (
               <tr>
-                <td>{word.english}</td>
-                <td>{word.japanese}</td>
+                <td
+                  style={{
+                    width: "50%",
+                    verticalAlign: "top",
+                  }}
+                >
+                  {word.english}
+                </td>
+                <td
+                  style={{
+                    width: "50%",
+                    verticalAlign: "top",
+                  }}
+                >
+                  {word.japanese}
+                </td>
               </tr>
             ))}
         </tbody>
