@@ -1,38 +1,39 @@
-import { useEffect, useState } from "react";
-import FetchRequestService from "../services/FetchRequestService";
+import { useState } from "react";
+// import FetchRequestService from "../services/FetchRequestService";
+import words from "../words";
 
 interface IWord {
   english: string;
   japanese: string;
+  kanji: string;
 }
 
-const ENV = (window as any).ENV;
+// const ENV = (window as any).ENV;
 
-const fetchRequestService = new FetchRequestService();
+// const fetchRequestService = new FetchRequestService();
 
 const Words = () => {
   const [search, setSearch] = useState("");
-  const [words, setWords] = useState([]);
+  // const [words, setWords] = useState([]);
 
-  useEffect(() => {
-    requestWords();
-  }, []);
+  // useEffect(() => {
+  //   requestWords();
+  // }, []);
 
-  const requestWords = async () => {
-    try {
-      const response = await fetchRequestService.request({
-        hostname: ENV.API_HOST,
-        path: "/api/words",
-        port: ENV.API_PORT,
-        method: "GET",
-        protocol: "http:",
-      });
-
-      setWords(JSON.parse(response));
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
+  // const requestWords = async () => {
+  //   try {
+  //     const response = await fetchRequestService.request({
+  //        hostname: ENV.API_HOST,
+  //        path: "/api/words",
+  //        port: ENV.API_PORT,
+  //        method: "GET",
+  //        protocol: "http:",
+  //      });
+  //     setWords(JSON.parse(response));
+  //   } catch (error: any) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <>
@@ -55,20 +56,23 @@ const Words = () => {
           >
             <th>English</th>
             <th>Japanese</th>
+            <th>Kanji</th>
           </tr>
         </thead>
         <tbody>
           {words
             .filter((word: IWord) => {
               return (
-                word.english.toLowerCase().includes(search.toLowerCase()) || word.japanese.toLowerCase().includes(search.toLowerCase())
+                word.english.toLowerCase().includes(search.toLowerCase()) ||
+                word.japanese.toLowerCase().includes(search.toLowerCase()) ||
+                word.kanji.toLowerCase().includes(search.toLowerCase())
               );
             })
             .map((word: IWord) => (
               <tr>
                 <td
                   style={{
-                    width: "50%",
+                    width: "33.33%",
                     verticalAlign: "top",
                   }}
                 >
@@ -76,11 +80,19 @@ const Words = () => {
                 </td>
                 <td
                   style={{
-                    width: "50%",
+                    width: "33.33%",
                     verticalAlign: "top",
                   }}
                 >
                   {word.japanese}
+                </td>
+                <td
+                  style={{
+                    width: "33.33%",
+                    verticalAlign: "top",
+                  }}
+                >
+                  {word.kanji}
                 </td>
               </tr>
             ))}
